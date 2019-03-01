@@ -41,8 +41,11 @@ enum macro_keycodes {
 
 #define KC______ KC_TRNS
 #define KC_XXXXX KC_NO
-#define KC_LOWER LOWER
-#define KC_RAISE RAISE
+// #define KC_LOWER LOWER
+// #define KC_RAISE RAISE
+#define KC_LOWER LT(_LOWER, KC_ESC)
+#define KC_RAISE LT(_RAISE, KC_BSPC)
+#define KC_ADJST ADJUST
 #define KC_RST   RESET
 #define KC_LRST  RGBRST
 #define KC_LTOG  RGB_TOG
@@ -78,7 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                   LEFT,  DOWN,    UP,  RGHT, XXXXX, LOWER,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                   LALT, LOWER,   ESC,      ESC, RAISE,  RGUI \
+                                   LALT, LOWER,   ESC,      ESC, ADJST, RGUI \
                               //`--------------------'  `--------------------'
   ),
 
@@ -90,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                   UNDS,  PLUS,  LBRC,  RBRC,  BSLS,  TILD,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                   LALT, LOWER,   ESC,      ESC, RAISE,  RGUI \
+                                   LALT, ADJST,   ESC,      ESC, RAISE,  RGUI \
                               //`--------------------'  `--------------------'
   ),
 

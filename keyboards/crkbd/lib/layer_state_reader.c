@@ -6,7 +6,8 @@
 #define L_BASE 0
 #define L_LOWER 8
 #define L_RAISE 16
-#define L_ADJUST 65536
+//#define L_ADJUST 65536
+#define L_ADJUST 65544
 #define L_ADJUST_TRI 65560
 
 char layer_state_str[24];
