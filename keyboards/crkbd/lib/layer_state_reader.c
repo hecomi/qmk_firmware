@@ -6,9 +6,10 @@
 #define L_BASE 0
 #define L_LOWER 8
 #define L_RAISE 16
-//#define L_ADJUST 65536
-#define L_ADJUST 65544
+#define L_FN 32
+#define L_ADJUST 65536
 #define L_ADJUST_TRI 65560
+#define L_ADJUST_HECOMI 65544
 
 char layer_state_str[24];
 
@@ -24,8 +25,12 @@ const char *read_layer_state(void) {
   case L_LOWER:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Lower");
     break;
+  case L_FN:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Fn");
+    break;
   case L_ADJUST:
   case L_ADJUST_TRI:
+  case L_ADJUST_HECOMI:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Adjust");
     break;
   default:
