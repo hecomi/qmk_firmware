@@ -46,7 +46,7 @@ enum macro_keycodes {
 // #define KC_LOWER LOWER
 // #define KC_RAISE RAISE
 #define KC_LOWER LT(_LOWER, KC_ESC)
-#define KC_RAISE LT(_RAISE, KC_ENT)
+#define KC_RAISE LT(_RAISE, KC_BSPC)
 #define KC_FN    LT(_FN, KC_ENT)
 #define KC_ADJST ADJUST
 #define KC_RST   RESET
