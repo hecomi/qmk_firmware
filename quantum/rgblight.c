@@ -51,6 +51,10 @@ static inline int is_static_effect(uint8_t mode) {
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
+#ifdef RGBLIGHT_LED_MAP
+const uint8_t led_map[] PROGMEM = RGBLIGHT_LED_MAP;
+#endif
+
 #ifdef RGBLIGHT_EFFECT_STATIC_GRADIENT
 __attribute__ ((weak))
 const uint16_t RGBLED_GRADIENT_RANGES[] PROGMEM = {360, 240, 180, 120, 90};
@@ -225,11 +229,14 @@ void rgblight_init(void) {
 
 }
 
+uint32_t rgblight_read_dword(void) {
+  return rgblight_config.raw;
+}
+
 void rgblight_update_dword(uint32_t dword) {
   rgblight_config.raw = dword;
-  eeconfig_update_rgblight(rgblight_config.raw);
   if (rgblight_config.enable)
-    rgblight_mode(rgblight_config.mode);
+    rgblight_mode_noeeprom(rgblight_config.mode);
   else {
 #ifdef RGBLIGHT_USE_TIMER
       rgblight_timer_disable();
@@ -662,10 +669,20 @@ void rgblight_sethsv_slave(uint16_t hue, uint8_t sat, uint8_t val) {
 #ifndef RGBLIGHT_CUSTOM_DRIVER
 void rgblight_set(void) {
   if (rgblight_config.enable) {
-    #ifdef RGBW
-      ws2812_setleds_rgbw(led, RGBLED_NUM);
+      LED_TYPE *ledp;
+    #ifdef RGBLIGHT_LED_MAP
+      LED_TYPE led0[RGBLED_NUM];
+      for(uint8_t i = 0; i < RGBLED_NUM; i++) {
+          led0[i] = led[pgm_read_byte(&led_map[i])];
+      }
+      ledp = led0;
     #else
-      ws2812_setleds(led, RGBLED_NUM);
+      ledp = led;
+    #endif
+    #ifdef RGBW
+      ws2812_setleds_rgbw(ledp, RGBLED_NUM);
+    #else
+      ws2812_setleds(ledp, RGBLED_NUM);
     #endif
   } else {
     for (uint8_t i = 0; i < RGBLED_NUM; i++) {
@@ -795,7 +812,7 @@ void rgblight_effect_breathing(uint8_t interval) {
   static uint16_t last_timer = 0;
   float val;
 
-  uint8_t interval_time = get_interval_time(&RGBLED_RAINBOW_SWIRL_INTERVALS[interval / 2], 1, 100);
+  uint8_t interval_time = get_interval_time(&RGBLED_BREATHING_INTERVALS[interval], 1, 100);
   
   if (timer_elapsed(last_timer) < interval_time) {
     return;
